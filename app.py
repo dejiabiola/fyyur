@@ -4,7 +4,9 @@
 import sys
 import dateutil.parser
 import babel
-from flask import render_template, request, flash, redirect, url_for, abort, jsonify
+from flask import Flask, render_template, request, flash, redirect, url_for, abort, jsonify
+from flask_moment import Moment
+from flask_migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
 from forms import *
@@ -13,7 +15,12 @@ from models import *
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
-
+app = Flask(__name__)
+moment = Moment(app)
+app.config.from_object('config')
+db.init_app(app)
+# Link up flask migration
+migrate = Migrate(app, db)
 
 #----------------------------------------------------------------------------#
 # Filters.
