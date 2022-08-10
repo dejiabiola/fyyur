@@ -37,14 +37,6 @@ class Venue(db.Model):
     shows = db.relationship('Show', backref="venue",
                             lazy=True, cascade="all, delete-orphan")
 
-    @property
-    def upcoming_shows(self):
-        return [show for show in self.shows if show.start_time > datetime.now()]
-
-    @property
-    def past_shows(self):
-        return [show for show in self.shows if show.start_time < datetime.now()]
-
     def __repr__(self):
         return f'Venue name is {self.name} with id {self.id}'
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
@@ -66,15 +58,6 @@ class Artist(db.Model):
     # testing storing genres as array
     genres = db.Column(db.ARRAY(db.String(120)), nullable=False)
     shows = db.relationship('Show', backref="artist", lazy=True)
-
-    @property
-    def upcoming_shows(self):
-
-        return [show for show in self.shows if show.start_time > datetime.now()]
-
-    @property
-    def past_shows(self):
-        return [show for show in self.shows if show.start_time < datetime.now()]
 
     def __repr__(self):
         return f'Artist name is {self.name} with id {self.id}'
